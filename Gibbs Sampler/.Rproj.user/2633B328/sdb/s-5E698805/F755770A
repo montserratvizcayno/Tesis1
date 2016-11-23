@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "## cargar paquetes y funciones\nsource(\"funciones.R\") \n\ndata.clientes <- read.csv('Clientes_17092105.csv',\n                  stringsAsFactors = FALSE)\nhead(data.clientes)\nglimpse(data.clientes)\n\n\nhiper.param <- estadisticos_iniciales(data.clientes)\n\nparam.iniciales <- dist_inciales(data.clientes, nom.var = \"Monto_prom\", componente = 2)\n\n\nprueba_univar <- simulaciones(datos = data.clientes, nom.var = 'Creditos', componente = 2,\n                    folio = 'Cliente', iteraciones = 10)\n\nprueba_univar %>%\n  dplyr::select(sim, componente, pi) %>% \n  ggplot(aes(x = sim, y = pi, group = as.factor(componente), colour = as.factor(componente))) +\n    geom_point() +\n    geom_line()\n",
+    "created" : 1479859928379.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3099579438",
+    "id" : "F755770A",
+    "lastKnownWriteTime" : 1479859126,
+    "last_content_update" : 1479859126,
+    "path" : "~/R/tesis_mon/pruebas.R",
+    "project_path" : "pruebas.R",
+    "properties" : {
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
