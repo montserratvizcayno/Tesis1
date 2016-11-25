@@ -1,6 +1,6 @@
-library(tidyverse) ## paquetería de Hadely
-library(MCMCpack)  ## inversa gamma
-library(LCA) ## dirichlet
+library(tidyverse) 
+library(MCMCpack)  
+library(LCA) 
 
 estadisticos_iniciales <- function(datos){
   
@@ -20,16 +20,17 @@ estadisticos_iniciales <- function(datos){
   return(res)
   
 }
-
+## esta funci?n calcula las distribuciones previas, toma como valor por default que sean dos componentes
+##en la funci?n se pueden tomar 1 o mas variables, en el ejemplo solo ocupo 1
 dist_inciales <- function(datos, nom.var = names(datos), componente = 2){
   
-  ## se calculan media y varianza para las previas
+  
   est.init <- estadisticos_iniciales(datos) %>%
     data.frame()
   
   k <- componente
   
-  ## hiperparámetros iniciales
+  ## hiperparámetros iniciales que en este caso toman valores de 1 y pi= 1 / #de componentes
   nj <- rep(1, k)
   vj <- rep(1, k)
   sj <- rep(1, k)
@@ -71,28 +72,28 @@ dist_inciales <- function(datos, nom.var = names(datos), componente = 2){
 simulaciones <- function(datos, nom.var = names(datos), componente = 2,
                          folio = NULL, iteraciones = 1000){
   
-  ## iniciar parámetros
+ 
   k <- componente
-  param <- dist_inciales(datos, nom.var, k)
+  param <- dist_inciales(datos, nom.var, k) ##devuelve los par?metros iniciales
   sims <- NULL
   sims_total <- NULL
   col <- as.numeric(which(names(datos) %in% nom.var))
   est <- estadisticos_iniciales(datos)
-  mu0 <- as.numeric(est[which(est$variable == nom.var), "media"])
+  mu0 <- as.numeric(est[which(est$variable == nom.var), "media"]) #la media obtenida de los datos
   
   n <- dim(datos)[1]
   for(j in 1:iteraciones){
     
-    ## primer for sirve para actualizar parámetros (mu y sigma)  
-    print(j)
+    ## primer for sirve para actualizar parámetros (mu y sigma) que se calculan con las distribuciones posteriores 
+    print(j) ## imprime el n?mero de iteraci?n que ha transcurrido
     
     for( i in 1:n){
       
-      ## evaluación de cada unas de las x_i
+     ## se calcula la variable latente para cada una de las Xi's
       aux <- param %>%
         mutate(delta = pi*dnorm(datos[i, nom.var],mu_inicial,sqrt(sigma_inicial)),
-               ### mon, aquí hay pedos cuando las deltas son ceros entonces le puse que si la
-               ### suma de las deltas es cero te ponga un 0.5 :/ pregúntale al prof que pedo
+               ### en las pruebas por alguna raz?n la delta que se define arriba se vuelve cero, as?
+               ###que por el momento en caso de que eso ocurra le asigno .5 al par?metro p de la bernoulli
                p_bern = ifelse(sum(delta) != 0, delta/sum(delta), 0.5)) %>%
                # p_bern = delta/sum(delta)) %>% 
         rowwise() %>%
@@ -106,7 +107,8 @@ simulaciones <- function(datos, nom.var = names(datos), componente = 2,
     }
     
     id_bern <- sims[which(sims$sim_bern == 1), c("id", "componente")]
-    
+    ## se hace un filtrado por componente y se saca el numero de xi´s que tiene cada uno
+    ## y la media de cada uno
     auxj <- sims %>%
       filter(sim_bern == 1) %>%
       mutate(n_tot = n()) %>% 
@@ -126,9 +128,9 @@ simulaciones <- function(datos, nom.var = names(datos), componente = 2,
               diff = paste("(", as.name(nom.var)  ,"-",  as.name(nom.media), ")^2"  )) %>%
       summarise(med_tot = mean(media),
                 suma_tot = mean(suma),
-                diff_cuad = sum(diff)^2)
+                diff_cuad = sum(diff)^2) ##esta es la suma por componente de (diferencia de xi-media del componente) ^2
     
-    sigma.sim <- auxj %>%
+    sigma.sim <- auxj %>% ##se calcula la posterior de sigma
       left_join(aux.media, by = "componente") %>%
       left_join(param, by = "componente") %>%
       rowwise() %>%
@@ -136,15 +138,15 @@ simulaciones <- function(datos, nom.var = names(datos), componente = 2,
                                    0.5*( sj^2 + diff_cuad + (nj*prop*(med_tot - mu0)^2)/(nj + prop)))) %>%
       data.frame
     
-    mu.sim <- sigma.sim %>%
+    mu.sim <- sigma.sim %>%##se calcula la posterior de mu
       rowwise() %>% 
       mutate(mu_sim = rnorm(1, (nj*mu0 + prop*med_tot)/(nj + prop),
                             sigma_sim/(nj + prop))) %>%
       data.frame()
     
-    pi.sim <- as.numeric(rdirichlet(1, mu.sim$prop/sum(mu.sim$prop)))
+    pi.sim <- as.numeric(rdirichlet(1, mu.sim$prop/sum(mu.sim$prop)))##se calcula la nueva pi 
     
-    param <- data.frame(componente = 1:k,
+    param <- data.frame(componente = 1:k, ##se actualizan los valores de los parametros
                         mu_inicial = mu.sim$mu_sim,
                         sigma_inicial = mu.sim$sigma_sim,
                         pi = pi.sim,
