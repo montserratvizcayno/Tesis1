@@ -9,14 +9,56 @@ glimpse(data.clientes)
 
 hiper.param <- estadisticos_iniciales(data.clientes)
 
-param.iniciales <- dist_inciales(data.clientes, nom.var = "Monto_prom", componente = 2)
+param.iniciales <- dist_inciales(data.clientes, nom.var = "Creditos", componente = 2)
 
 
 prueba_univar <- simulaciones(datos = data.clientes, nom.var = 'Creditos', componente = 2,
-                    folio = 'Cliente', iteraciones = 10)
+                    folio = 'Cliente', iteraciones = 2)
 
 prueba_univar %>%
   dplyr::select(sim, componente, pi) %>% 
   ggplot(aes(x = sim, y = pi, group = as.factor(componente), colour = as.factor(componente))) +
     geom_point() +
     geom_line()
+
+
+prueba_univar4 <- simulaciones(datos = data.clientes, nom.var = 'Creditos', componente = 2,
+                              folio = 'Cliente', iteraciones = 2)
+
+filtrados <- prueba_univar[which(prueba_univar$sim_bern == 1), c("id", "componente")]
+filtrados
+
+
+prueba_univar %>%
+  dplyr::select(sim, componente, pi) %>% 
+  ggplot(aes(x = sim, y = pi, group = as.factor(componente), colour = as.factor(componente))) +
+  geom_point() +
+  geom_line()
+
+prueba_univar %>%
+  dplyr::select(sim, componente, mu_inicial) %>% 
+  ggplot(aes(x = sim, y = mu_inicial, group = as.factor(componente), colour = as.factor(componente))) +
+  geom_point() +
+  geom_line()
+
+prueba_univar %>%
+  dplyr::select(sim, componente, delta) %>% 
+  ggplot(aes(x = sim, y = delta, group = as.factor(componente), colour = as.factor(componente))) +
+  geom_point() +
+  geom_line()
+
+library(dplyr)
+delta_cero <- filter(prueba_univar,delta == 0)
+delta_cero
+asignaciones <- filter(prueba_univar,sim_bern == 1)
+asignaciones
+
+n <- dim(prueba_univar)[1]
+
+intento <- prueba_univar %>%
+  filter(sim_bern == 1) %>%
+  mutate(n_tot = n()) %>% 
+  group_by(componente) %>%
+  summarise(prop = n()) %>%
+  ungroup()
+
