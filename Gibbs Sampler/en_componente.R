@@ -5,7 +5,7 @@
 en_componente<-function(sims,id_bern){
 
 auxj <-sims  %>%
-  filter(sim_bern == 1) %>%  
+  ##filter(sim_bern == 1) %>%  
   mutate(n_tot = n()) %>% 
   group_by(componente) %>%
   summarise(prop = n()) %>%
@@ -16,7 +16,7 @@ return(auxj)
 
 ##---------prueba--------
 
-id_berns <- trials[which(trials$sim_bern == 1), c("id", "componente")]
+id_berns <- trials[ c("id", "componente")]
 intento2<-en_componente(trials,id_berns)
 intento2
 

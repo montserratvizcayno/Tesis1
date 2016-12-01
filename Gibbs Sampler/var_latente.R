@@ -17,8 +17,11 @@ var_latente<-function(datos,nom.vars = names(datos), k,
            sim = j) %>%
     data.frame()
   
+    auxi<-aux%>%
+        filter(sim_bern == 1)%>%
+    data.frame()
   
-  return<-(aux)
+  return<-(auxi)
 }
 
 
@@ -27,7 +30,7 @@ var_latente<-function(datos,nom.vars = names(datos), k,
 trial<-NULL
 trials<-NULL
 for(j in 1:3){
-trial<-var_lat(datos=data.clientes,nom.vars ='Creditos', k=2,
+trial<-var_latente(datos=data.clientes,nom.vars ='Creditos', k=2,
                folio = 'Cliente',param=param.iniciales,est=hiper.param,j=j,i=3) 
 trials<-rbind(trial,trials)
 }

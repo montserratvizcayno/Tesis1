@@ -26,4 +26,4 @@ est_componente<-por_componente(datos=data.clientes,sims=trials,auxj=intento2,id_
 trials
 
 por_componente(datos=data.clientes,sims=trials,id_bern=id_berns, 
-               nom.var='Creditos',folio='Cliente')
+               nom.var='Creditos',nom.media='media',folio='Cliente')
