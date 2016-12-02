@@ -1,7 +1,7 @@
 
 simulaciones <- function(datos, nom.var = names(datos), componente = 2,
                           folio = NULL, iteraciones = 1000){
-  
+  ##set.seed(9024)
   
   k <- componente
   param <- dist_inciales(datos, nom.var, k) ##devuelve los par?metros iniciales
@@ -10,17 +10,19 @@ simulaciones <- function(datos, nom.var = names(datos), componente = 2,
   col <- as.numeric(which(names(datos) %in% nom.var))
   est <- estadisticos_iniciales(datos)
   mu0 <- as.numeric(est[which(est$variable == nom.var), "media"]) #la media obtenida de los datos
+  #var0 <- as.numeric(est[which(est$variable == nom.var), "varianza"]) #la varianza obtenida de los datos
   
   n <- dim(datos)[1]
   for(j in 1:iteraciones){
     
     ## primer for sirve para actualizar parámetros (mu y sigma) que se calculan con las distribuciones posteriores 
-    print(j) ## imprime el n?mero de iteraci?n que ha transcurrido
     
-    for( i in 1:20){
+    
+    for( i in 1:n){
       
       ## se calcula la variable latente para cada una de las Xi's
-      aux<-var_latente(data.clientes,nom.vars = nom.var,k=k,folio = 'Cliente',param= param,est=est,j,i)
+      aux<-var_latente(data.clientes,nom.vars = nom.var,k=k,folio = 'Cliente',
+                      param= param,est=est,j,i)
       
       sims <- rbind(aux, sims)
     }
@@ -78,6 +80,8 @@ simulaciones <- function(datos, nom.var = names(datos), componente = 2,
                         vj = rep(1, k),
                         sj = rep(1, k))
     
+    print(j) ## imprime el n?mero de iteraci?n que ha transcurrido
+    gc()
   }
   return(sims)
   
