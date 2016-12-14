@@ -1,5 +1,7 @@
-## esta funci?n calcula las distribuciones previas, toma como valor por default que sean dos componentes
-##en la funci?n se pueden tomar 1 o mas variables, en el ejemplo solo ocupo 1
+## esta funcion calcula las distribuciones previas, 
+## toma como valor por default que sean dos componentes
+## en la funcion se pueden tomar 1 o mas variables, 
+## en el ejemplo solo ocupo 1
 dist_inciales <- function(datos, nom.var = names(datos), componente = 2){
   
   
@@ -43,6 +45,5 @@ dist_inciales <- function(datos, nom.var = names(datos), componente = 2){
                            sj = sj)
   
   return(param.init)
-  
   
 }

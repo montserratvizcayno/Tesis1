@@ -1,5 +1,5 @@
 
-##calcula la posterior del parámetro mu
+##calcula la posterior del par?metro mu
 posterior_mu<-function(sigma.sim,mu0){
 mu.sim <- sigma.sim %>%
   rowwise() %>% 
@@ -11,6 +11,6 @@ return(mu.sim)
 }
 
 
-##-----------------prueba--------------------
-
-post_mu<-posterior_mu(sigma.sim=post_sig,mu0=2.887114)
+###-----------------prueba--------------------
+#
+#post_mu<-posterior_mu(sigma.sim=post_sig,mu0=2.887114)

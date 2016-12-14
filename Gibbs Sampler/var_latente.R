@@ -25,14 +25,14 @@ var_latente<-function(datos,nom.vars = names(datos), k,
 }
 
 
-### ----------------------------pruebas-------------------------------------------------------
-
-trial<-NULL
-trials<-NULL
-for(i in 1:15000){
-trial<-var_latente(datos=data.clientes,nom.vars ='Creditos', k=2,
-               folio = 'Cliente',param=param.iniciales,est=hiper.param,j=1,i=i) 
-
-trials<-rbind(trial,trials)
-print(i)
-}
+#### ----------------------------pruebas-------------------------------------------------------
+#
+#trial<-NULL
+#trials<-NULL
+#for(i in 1:15000){
+#trial<-var_latente(datos=data.clientes,nom.vars ='Creditos', k=2,
+#               folio = 'Cliente',param=param.iniciales,est=hiper.param,j=1,i=i) 
+#
+#trials<-rbind(trial,trials)
+#print(i)
+#}

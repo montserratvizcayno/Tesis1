@@ -1,6 +1,6 @@
 
 ##esta funcion calcula:
-##la nueva media de las xi's de cada compentene en la iteración j (media)
+##la nueva media de las xi's de cada compentene en la iteraci?n j (media)
 ##la diferencia de cuadrados (nom.var-media)^2
 
 por_componente<-function(datos,sims,auxj,id_bern,nom.var,nom.media,folio=NULL){
@@ -19,11 +19,11 @@ por_componente<-function(datos,sims,auxj,id_bern,nom.var,nom.media,folio=NULL){
               diff_cuad = sum(diff)^2) 
 }
 
-##------------------------prueba-----------------------------------------------------
-id_berns <- trials[which(trials$sim_bern == 1), c("id", "componente")]
-est_componente<-por_componente(datos=data.clientes,sims=trials,auxj=intento2,id_bern=id_berns, 
-                               nom.var='Creditos',nom.media='media',folio='Cliente')
-trials
-
-por_componente(datos=data.clientes,sims=trials,id_bern=id_berns, 
-               nom.var='Creditos',nom.media='media',folio='Cliente')
+###------------------------prueba-----------------------------------------------------
+#id_berns <- trials[which(trials$sim_bern == 1), c("id", "componente")]
+#est_componente<-por_componente(datos=data.clientes,sims=trials,auxj=intento2,id_bern=id_berns, 
+#                               nom.var='Creditos',nom.media='media',folio='Cliente')
+#trials
+#
+#por_componente(datos=data.clientes,sims=trials,id_bern=id_berns, 
+#               nom.var='Creditos',nom.media='media',folio='Cliente')

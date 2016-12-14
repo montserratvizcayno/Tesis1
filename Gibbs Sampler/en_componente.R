@@ -1,5 +1,5 @@
 
-## esta función calcula número de total de xi's que hay en cada componente en la iteración j (n_tot)
+## esta funci?n calcula n?mero de total de xi's que hay en cada componente en la iteraci?n j (n_tot)
 
 
 en_componente<-function(sims,id_bern){
@@ -14,11 +14,11 @@ return(auxj)
 }
 
 
-##---------prueba--------
-
-id_berns <- trials[ c("id", "componente")]
-intento2<-en_componente(trials,id_berns)
-intento2
+###---------prueba--------
+#
+#id_berns <- trials[ c("id", "componente")]
+#intento2<-en_componente(trials,id_berns)
+#intento2
 
 
 

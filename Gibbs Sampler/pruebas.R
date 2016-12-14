@@ -1,6 +1,8 @@
 ## cargar paquetes y funciones
 ##source("funciones.R") 
 
+rm(list=ls())
+
 require("repmis")
 require("tidyverse") 
 require("MCMCpack")  
