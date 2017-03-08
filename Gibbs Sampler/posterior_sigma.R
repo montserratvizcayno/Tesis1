@@ -12,5 +12,5 @@ sigma.sim <- auxj %>% ##se calcula la posterior de sigma
 }
 
 ##----------prueba----------------------------
-
-post_sig<-posterior_sigma(auxj=intento2,aux.media=est_componente, param=param.iniciales,mu0=2.887114)
+#
+#post_sig<-posterior_sigma(auxj=intento2,aux.media=est_componente, param=param.iniciales,mu0=2.887114)

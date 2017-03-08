@@ -1,5 +1,6 @@
 #
 #   Tesis: Montserrat
+#   -- 2017-mar-03 --
 #   -- 2016-dic-13 --
 #   
 
@@ -9,13 +10,18 @@ rm(list=ls())
 #install.packages("tidyverse")
 #install.packages("MCMCpack")
 #install.packages("LCA")
+#install.packages("dplyr")
+#install.packages("tidyr")
 
-require("repmis")
+# require("repmis")
 require("tidyverse") 
 require("MCMCpack")  
 require("LCA") 
+require("dplyr")
+require("tidyr")
 
-setwd("C:/JCMO.Trabajo/@Estudiantes/Montserrat Vizcayno/Tesis1/Gibbs Sampler/")
+#setwd("C:/JCMO.Trabajo/@Estudiantes/Montserrat Vizcayno/Tesis1/Gibbs Sampler/") # Windows
+setwd("/run/media/jmartineov/JC.ITAM/JCMO.Trabajo/@Estudiantes/Montserrat Vizcayno/Tesis1/Gibbs Sampler/") # Linux
 
 # Funciones
 source("dist_inciales.R")
