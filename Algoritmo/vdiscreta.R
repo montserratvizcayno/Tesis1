@@ -1,4 +1,4 @@
-vdiscreta<-function(datos,lambda0,l,i,nom.vard, t=1){
+vdiscreta<-function(datos,lambda0,l,i,nom.vard){
  
    #valores de las variables discretas de la observación i
   xds<-as.numeric(datos[i, nom.vard])
@@ -10,9 +10,10 @@ vdiscreta<-function(datos,lambda0,l,i,nom.vard, t=1){
   ## utlizando las lambdas calculadas con las distribuciones previas . 
   aux.po<-lambda0%>%
     dplyr::filter(v.k==l)%>% ## se filta por componente
-    mutate(po=ifelse(variable=="Electronico",dpois(xds,lambda*t),dpois(xds,lambda, FALSE)))%>%
+    mutate(po=dpois(xds,lambda))%>%
     data.frame()
   
   return(aux.po)
 }
+
 

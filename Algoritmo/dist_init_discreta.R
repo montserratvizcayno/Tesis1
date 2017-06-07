@@ -1,4 +1,4 @@
-dist_init_discreta <- function(datos, nom.vard = names(datos), componente = 2, a=1){
+dist_init_discreta <- function(datos, nom.vard = names(datos), componente = 2, a=1,t=1/10){
   
   ##a es el parámetro de forma y se le da un valor de 1 por default
   
@@ -25,7 +25,7 @@ dist_init_discreta <- function(datos, nom.vard = names(datos), componente = 2, a
   ## (cuando las variables discretas son iid )
   aux.lambda0 <- data.frame(v.k,est.init,a = aj) %>%
     rowwise() %>% 
-    mutate(lambda= rgamma(1, shape=(aj), scale=(varianza))) %>%
+    mutate(lambda=ifelse(variable=="Electronico",rgamma(1, shape=aj, scale=varianza*t) ,rgamma(1, shape=aj, scale=varianza)))%>%
     data.frame()
   
   lambda0 <- aux.lambda0

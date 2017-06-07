@@ -1,4 +1,4 @@
-posterior_sigma_multi<-function(hparam.post,nom.varc,k){
+posterior_sigma_multi<-function(hparam.post,nom.varc,xjs_barra,k){
 
   ynom.varc<-paste0(nom.varc,".y")
   xnom.varc<-paste0(nom.varc,".x")
@@ -7,6 +7,17 @@ posterior_sigma_multi<-function(hparam.post,nom.varc,k){
 
 for(l in 1:k){
   
+  indicadora<-xjs_barra%>%
+    #group_by(v.k)%>%
+    #summarise(ks=sum(v.k))%>%
+    dplyr::filter(v.k==l)
+  
+  indice<- nrow(indicadora)
+  
+  
+  
+  if(indice!=0){
+  
   aux.pparam<-hparam.post%>%
     dplyr::filter(v.k==l)
   
@@ -14,8 +25,11 @@ for(l in 1:k){
     dplyr::select(one_of(ynom.varc))%>%
     setNames(c(nom.varc))%>%
     as.matrix()
+  indice.s<-nrow(aux.s)
   
+  if(indice.s!=0){
   rownames(aux.s)<-nom.varc
+  }
   
   aux.postsigma<-riwish(aux.pparam$v[1],aux.s)
     
@@ -51,6 +65,8 @@ for(l in 1:k){
     setNames(c("v.k","variable",xnom.varc,"mu0","media",ynom.varc,"v","njs"))
   
   param.post<-rbind(aux.post,param.post)
+  
+   }
   
   }
   

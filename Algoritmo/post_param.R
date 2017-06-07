@@ -1,5 +1,7 @@
 
-post_param<-function(datos,param,asigna,nom.varc,xjs_barra,k,d,folio=NULL){
+##se obtienen los nuevos hiperparámetros para la parte discreta
+
+post_param<-function(datos,param0,asigna,nom.varc,xjs_barra,k,d,folio=NULL){
   
   diffs<-NULL
   
@@ -11,10 +13,10 @@ post_param<-function(datos,param,asigna,nom.varc,xjs_barra,k,d,folio=NULL){
   mdifnom.varc<-paste0("difm_",nom.varc)
   ynom.varc<-paste0(nom.varc,".y")
   
-  aux.media<-param%>%
+  aux.media<-param0%>%
     dplyr::select(v.k,variable,media)
  
-   aux.param<-param%>%
+   aux.param<-param0%>%
     dplyr::select(one_of(c("v.k","v","njs")))%>%
     distinct()%>%
     merge(aux.xjs,id=v.k)%>%
@@ -38,12 +40,16 @@ post_param<-function(datos,param,asigna,nom.varc,xjs_barra,k,d,folio=NULL){
    
    for(l in 1:k){
      
-     indicadora<-param%>%
-       group_by(v.k)%>%
-       summarise(ks=sum(v.k))%>%
+     indicadora<-xjs_barra%>%
+       #group_by(v.k)%>%
+       #summarise(ks=sum(v.k))%>%
        dplyr::filter(v.k==l)
      
-  if(indicadora$ks!=0){
+    indice<- nrow(indicadora)
+     
+     
+     
+  if(indice!=0){
      
   ##calcula el cuadrado de xi-xj_tilde  
    diffc<-data.frame(aux.asigna,aux.diff)%>%
@@ -59,19 +65,21 @@ post_param<-function(datos,param,asigna,nom.varc,xjs_barra,k,d,folio=NULL){
    ##calcula el cuadrado de la diferencia de xj_tilde y la media 
    diffm<-aux.param%>%
      dplyr::filter(v.k==l)%>%
-     dplyr::select(dif_m)%>%
-     as.matrix()%>%
-     t()
-   
-     colnames(diffm)<-mdifnom.varc
+     dplyr::select(variable,dif_m)%>%
+     rename(c(variable="var"))%>%
+     melt(id.vars="var")%>%
+     dcast(variable~var)%>%
+     setNames(c("var",mdifnom.varc))%>%
+     dplyr::select(one_of(c(mdifnom.varc)))
+     
+
   
-   
-   diff2<-crossprod(diffm)%>%
+   diff2<-crossprod(as.matrix(diffm))%>%
      data.frame()%>%
      mutate(vk=l)
    
    ##Obtener las varianzas observadas para cada v.k
-   aux.vars<-param%>%
+   aux.vars<-param0%>%
      dplyr::filter(v.k==l)
    
    vars.y<-as.matrix(aux.vars[ynom.varc])
@@ -99,5 +107,6 @@ post_param<-function(datos,param,asigna,nom.varc,xjs_barra,k,d,folio=NULL){
  return(new.param)
 
 }
+
 
 

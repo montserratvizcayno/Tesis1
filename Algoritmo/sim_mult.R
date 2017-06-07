@@ -9,39 +9,46 @@ sim_mult <- function(datos, nom.var = names(datos), nom.vard,nom.varc, component
   
   pis<-pi_init(k) #Calcula la distribución previa dirichlet(alphaj=1/k) para el parámetro pi
 
+  pis0 <- pis
   
   param <- dist_inicial_multi(datos, nom.varc, k) ##devuelve los par?metros iniciales de variables continuas
-  lambda<-dist_init_discreta(datos,nom.vard,k,a=a) ##devuelve los par?metros iniciales de variables discretas
+  param0 <- param
+  
+  lambda<-dist_init_discreta(datos,nom.vard,k,a=a,t=t) ##devuelve los par?metros iniciales de variables discretas
+  lambda0 <- lambda
   ##variables continuas
   cs<-datos[nom.varc]
   ##numero de variables continuas
-  d<-dim(cs)[2]
+  d<- ncol(cs)
   ##variables discretas
   ds<-datos[nom.vard]
   ##numero de variables discretas
-  p<-dim(ds)[2]
+  p<-ncol(ds)
   ##col <- as.numeric(which(names(datos) %in% nom.var))##da las posiciones de las variables en la base de datos )
   est <- estadisticos_iniciales(datos) ##media y varianza de los datos 
   
-  po<-NULL
-  nor<-NULL
+  
+  mu0s <- matrix(rep(NA,(d+4)*k),ncol=d+4)
+  colnames(mu0s)<-c("v.k","sim","sim_interna",nom.varc,"nor")
+  l0s <- matrix(rep(NA,(p+4)*k),ncol=p+4)
+  colnames(l0s)<-c("v.k","sim","sim_interna",nom.vard,"po")
+ 
   phis<-NULL
   sims_vlat <- NULL
   sims_total <- NULL
-  evaluadas<-NULL
-  evs<-NULL
   
-  mu0 <- est[which(est$variable == nom.varc), "media"] #la media obtenida de los datos
-  #var0 <- data.frame(est[which(est$variable == nom.var), "varianza"]) #la varianza obtenida de los datos
   
+ mu0 <- est[which(est$variable == nom.varc), "media"] #la media obtenida de los datos
+ 
   
   for(j in 1:iteraciones){
 
+    sims_vlat <- NULL
   ## se calcula la variable latente para cada una de las Xi's
-      for( i in 1:n){
+     for( i in 1:n){
       
-      po<-NULL
-      nor<-NULL
+      #po<-NULL
+      #nor<-NULL
       phis<-NULL
       
       ##por componente
@@ -49,13 +56,17 @@ sim_mult <- function(datos, nom.var = names(datos), nom.vard,nom.varc, component
         #se obtienen los valores de las fns de densidad poisson  
         #con los parámetros calcualdos con las distribuciones previas 
         #por cada  xi discreta
-        aux.po<-vdiscreta(datos,lambda,l,i,nom.vard, t=t)
-        po<-rbind(aux.po,po)
+        aux.po<-vdiscreta(datos,lambda,l,i,nom.vard)
+        print(aux.po)
+        aux.l0s<- t(as.matrix(aux.po$lambda))
+        l0s[l,] <- c(l,j,i,aux.l0s,prod(aux.po$po))
         #se obtienen los valores de la fn de densidad normal multivariada  
         #con los parámetros calcualdos con las distribuciones previas 
         #por cada  xi continua
         aux.nor<-vcontinua(datos,param,l,i,nom.varc)
-        nor<-rbind(aux.nor,nor)
+        
+        aux.mu0s <-t(as.matrix(aux.nor$mu0)) 
+        mu0s[l,] <- c(l,j,i,aux.mu0s,aux.nor$nor[1])
         
         ##Se incorpora la previa de la variable latente (pis) con las densidades
         ##de la parte ontinua y discreta
@@ -63,49 +74,63 @@ sim_mult <- function(datos, nom.var = names(datos), nom.vard,nom.varc, component
         
         phis<-rbind(aux.phi,phis)
         
-        evs<-data.frame(nor$nor,po$po) 
-        
-        evaluadas<-rbind(evs,evaluadas)
        }
       
       #simulacion de la variable latente para cada observacion i en la iteración j
       aux<-var_latente_multi(datos,nom.varc = nom.varc,nom.vard=nom.vard,phis,folio = 'Cliente',
                              j,i,k)
       print(aux)
-      sims_vlat <- rbind(aux, sims_vlat)
+      
+      p_aux <- merge(merge(aux,mu0s,by=c("sim","sim_interna","v.k")),
+                     l0s,by=c("sim","sim_interna","v.k"))
+      
+      sims_vlat <- rbind(p_aux, sims_vlat)
+      
+      print("sim")
       print(i)
      
       }
   
-  asigna<-sims_vlat%>%
-    dplyr::filter(zij==1)%>%
-    dplyr::select(id,v.k)
+    sims<-sims_vlat%>%
+      dplyr::select(v.k,phi,delta,zij,id,sim_interna,sim)%>%
+      dplyr::filter(sim==j)
+    
+    asigna<-sims%>%
+      dplyr::select(id,v.k)
+    
+    sims_total<-rbind(sims_vlat, sims_total)
   
   ## Se obtienen los hiperparámetros y parámetros para las distribuciones posteriores
-  zjs_barra<-en_componente_multi(sims_vlat)
+  zjs_barra<-en_componente_multi(sims) #devuelve el número de observaciones dentro de cada componente
   
-  xjs_barra<-por_componente_multi(datos,zjs_barra,sims_vlat,asigna,nom.var,folio='Cliente')
+  ##Se obtienen las medias dentro de cada componente
+  xjs_barra<-por_componente_multi(datos,zjs_barra,sims,asigna,nom.var,folio='Cliente')
   
-  hparam.post<-post_param(datos,param,asigna,nom.varc,xjs_barra,k,d,folio='Cliente')
+  ##se obtienen los nuevos hiperparámetros para las dist. posteriores continuas
+  hparam.post<-post_param(datos,param0,asigna,nom.varc,xjs_barra,k,d,folio='Cliente')
   
-  hlambda.post<-post_lambda(xjs_barra,lambda, nom.vard)
+  ##se obitneen los nuevos hiperparámetros para las dist. posteriores discretas.
+  hlambda.post<-post_lambda(xjs_barra,lambda0, nom.vard,t=t)
   
-  param.post<-posterior_sigma_multi(hparam.post,nom.varc,k)
+  ##se obtienen los parámetros para las dist. posterioes continuas
+  param.post<-posterior_sigma_multi(hparam.post,nom.varc,xjs_barra,k)
   
+  ##Se obtienen los parámetros para las dist. posterioes discretas
   lambda.post<-posterior_lambda(hlambda.post)
   
-  post.pis<-posterior_pi_multi(xjs_barra,pis,k)
+  #se obtienen los nuevos parámetros para la dist posterios de pij
+  post.pis<-posterior_pi_multi(xjs_barra,pis0,k)
   
   #actualización de los parámetros que pasan a ser las previas en t+1
   param<-param.post
   lambda<-lambda.post
   pis<-post.pis
   
-  print(j) ## imprime el n?mero de iteraci?n que ha transcurrido
-  gc()
+  print(j)  ## imprime el n?mero de iteraci?n que ha transcurrido
+  #gc()
   
   }
- return(sims_vlat)
+ return(sims_total)
 }    
 
 

@@ -13,8 +13,8 @@ dist_inicial_multi <- function(datos, nom.var = names(datos), k ){
   
  
   ## hiperparámetros iniciales 
-  nj <- n/k
-  vj <- p+1
+  nj <- ((n/k)-1)
+  vj <- 2*p
   #matriz de covarianza para los datos
   S<-cov(d)
   #vector de medias de los datos

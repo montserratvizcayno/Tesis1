@@ -1,4 +1,5 @@
-
+##se calculan las nuevas medias por cada componente 
+##ie la summa de las xis dentro de cada componenete entre el numero de observaciones del componente
 por_componente_multi<-function(datos,zjs_barra,sims_vlat,asigna,nom.var,folio=NULL){
 
 aux.media <- datos %>%
