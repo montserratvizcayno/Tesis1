@@ -1,18 +1,15 @@
 ---
-title: "Clasificación no supervisada utilizando
-modelos bayesianos"
-author: "Juan Carlos Martínez-Ovando"
-date: "3 March 2017"
-output:
-  pdf_document: default
-  html_document: default
+title: "Tesis Montserrat"
+author: "Juan Carlos Martinez-Ovando"
+date: "15 June 2017"
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Comentarios generales
+## Comentarios
 
 * En la `Introduccion` elabora una argumentacion de los dos tipos de enfoques para clasificacion no supervisada:
  
