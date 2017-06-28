@@ -81,8 +81,8 @@ sim_mult <- function(datos, nom.var = names(datos), nom.vard,nom.varc, component
                              j,i,k)
       #print(aux)
       
-      p_aux <- merge(merge(aux,mu0s,by=c("sim","sim_interna","v.k")),
-                     l0s,by=c("sim","sim_interna","v.k"))
+      p_aux <- merge(merge(aux,mu0s,id=c("sim","sim_interna","v.k")),
+                     l0s,id=c("sim","sim_interna","v.k"))
       
       sims_vlat <- rbind(p_aux, sims_vlat)
      
