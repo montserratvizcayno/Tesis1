@@ -9,8 +9,9 @@ var_latente_multi<-function(datos,nom.varc = names(datos),nom.vard=NULL,phis,
                        sim = j)
   for(l in 1:k){
     deltas$delta[l]<- ifelse(sum.phi!=0, phis$phi[l]/sum.phi, epsilon[l])
-    deltas$zij[l] <- as.numeric(rmultinom(1,1,deltas$delta[l]))
+    
   }
+  deltas$zij <- as.numeric(rmultinom(1,1,deltas$delta))
   
   return<-(deltas)
   
