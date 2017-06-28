@@ -25,7 +25,8 @@ dist_init_discreta <- function(datos, nom.vard = names(datos), componente = 2, a
   ## (cuando las variables discretas son iid )
   aux.lambda0 <- data.frame(v.k,est.init,a = aj) %>%
     rowwise() %>% 
-    mutate(lambda=ifelse(variable=="Electronico",rgamma(1, shape=aj, scale=varianza*t) ,rgamma(1, shape=aj, scale=varianza)))%>%
+    mutate(lambda=ifelse(variable=="Electronico",rgamma(1, shape=aj, scale=media*t),
+                         rgamma(1, shape=aj, scale=media)))%>%
     data.frame()
   
   lambda0 <- aux.lambda0

@@ -38,7 +38,7 @@ sim_mult <- function(datos, nom.var = names(datos), nom.vard,nom.varc, component
   sims_total <- NULL
   
   
- mu0 <- est[which(est$variable == nom.varc), "media"] #la media obtenida de los datos
+ $mu0 <- est[which(est$variable == nom.varc), "media"] #la media obtenida de los datos
  
   
   for(j in 1:iteraciones){
@@ -56,7 +56,7 @@ sim_mult <- function(datos, nom.var = names(datos), nom.vard,nom.varc, component
         #se obtienen los valores de las fns de densidad poisson  
         #con los parámetros calcualdos con las distribuciones previas 
         #por cada  xi discreta
-        aux.po<-vdiscreta(datos,lambda,l,i,nom.vard)
+        aux.po<-vdiscreta(datos,lambda,l,i,nom.vard,j)
         print(aux.po)
         aux.l0s<- t(as.matrix(aux.po$lambda))
         l0s[l,] <- c(l,j,i,aux.l0s,prod(aux.po$po))
