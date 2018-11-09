@@ -1,8 +1,11 @@
 
+
+##Se calcula la previa de la variable latente mediante una Dirichlet
+
 pi_init<-function(k){
   
   
-  probs<-rep(k,k)
+  probs<-rep(1/k,k)
   
   pi <- rdirichlet(1, probs)
   

@@ -13,7 +13,7 @@ dist_inicial_multi <- function(datos, nom.var = names(datos), k ){
   
   
   ## hiperparÃ¡metros iniciales 
-  nj <- ((n/k)-1)
+  nj <- ((32547/k)-1)
   vj <- 2*p
   #matriz de covarianza para los datos
   S<-cov(d)
@@ -29,9 +29,9 @@ dist_inicial_multi <- function(datos, nom.var = names(datos), k ){
     
     aux.sigma0 <- melt(aux.sigmas)
     
-    aux.sigma0 <- rename(aux.sigma0,c(X1="variable"))
+    aux.sigma0 <- rename(aux.sigma0,c(Var1="variable"))
     
-    aux.sigma0 <- dcast(aux.sigma0,variable~X2)
+    aux.sigma0 <- dcast(aux.sigma0,variable~Var2)
     
     
     ## calcular la dist previa del parámetro Mu 

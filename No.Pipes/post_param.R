@@ -1,5 +1,5 @@
 
-##se obtienen los nuevos hiperparámetros para la parte discreta
+##se obtienen los nuevos hiperparámetros para la parte continua
 
 post_param<-function(datos,param0,asigna,nom.varc,xjs_barra,k,d,folio=NULL){
   

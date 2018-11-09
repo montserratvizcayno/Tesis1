@@ -8,14 +8,13 @@ estadisticos_iniciales_mult <- function(datos){
   datos[ , nums]
   
   covar<-melt(cov(datos[ ,nums]))
-  covar <- rename(covar,c(X1="variable",X2="O"))
-  covar <- dcast(covar,variable~O)
+  covar <- rename(covar,c(Var1="variable",Var2="O"))
+  covar <- dcast(covar,variable ~ O)
   
   res <- datos[,nums]
   res <- gather(res,variable, value)
   res <- group_by(res,variable) 
-  res <- summarise(res,media = mean(value)) 
-  
+  res <- summarise(res,media = mean(value))
   
   resultado<-merge(res,covar)
   

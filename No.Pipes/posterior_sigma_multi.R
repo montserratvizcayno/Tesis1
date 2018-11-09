@@ -30,8 +30,8 @@ posterior_sigma_multi<-function(hparam.post,nom.varc,xjs_barra,k){
       
       
       aux.posts0<-melt(aux.postsigma)
-      aux.posts0 <- rename(aux.posts0,c(X1="variable"))
-      aux.posts0 <- dcast(aux.posts0,variable~X2)
+      aux.posts0 <- rename(aux.posts0,c(Var1="variable"))
+      aux.posts0 <- dcast(aux.posts0,variable~Var2)
       
       
       ## calcular la dist previa del parámetro Mu con una distribución normal multivariada(Medias observadas,Sigmas)

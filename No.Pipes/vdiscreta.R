@@ -1,4 +1,4 @@
-vdiscreta<-function(datos,lambda0,l,i,nom.vard,j){
+vdiscreta<-function(datos,lambda0,l,i,nom.vard,j, t){
   
   d <- datos[ nom.vard]
   p <- dim(d)[2] 
@@ -15,7 +15,7 @@ vdiscreta<-function(datos,lambda0,l,i,nom.vard,j){
   aux.po <- lambda0[which(lambda0$v.k==l),]## se filta por componente
   
   for(r in 1:p){
-  aux.po$po[r] <- ifelse(j==1,dpois(xds[r],aux.po$lambda[r]),dpois(xds[r],aux.po$lambda[r]/10000000))
+  aux.po$po[r] <- ifelse(j==1,dpois(xds[r],aux.po$lambda[r]),dpois(xds[r],aux.po$lambda[r]/t))
   }
   
   return(aux.po)

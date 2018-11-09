@@ -7,7 +7,7 @@ post_lambda<-function(xjs_barra,lambda0, nom.vard,t=1/10){
   
   aux.xjs<-xjs_barra[c("v.k","zj",nom.vard)]
   aux.melt <- melt(aux.xjs,measure.vars=c(nom.vard),value.name="xj")
-  aux.xjs <- data.frame(aux.melt,zxl=aux.melt$zj*aux.melt$value)
+  aux.xjs <- data.frame(aux.melt,zxl=aux.melt$zj*aux.melt$xj)
   aux.xjs <- setNames(aux.xjs,c("v.k","zj","variable","xj","zxl"))
   
   

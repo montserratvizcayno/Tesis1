@@ -1,5 +1,5 @@
 sim_mult <- function(datos, nom.var = names(datos), nom.vard,nom.varc, componente = 2,
-                     folio = NULL, n=dim(datos)[1],a=1, t=1,iteraciones = 1000){
+                     folio = NULL, n=dim(datos)[1],a=1, t=100,iteraciones = 1000){
   
   # a es el hiperparámetro de forma para la distribución previa de lambda
   # t es el valor para escalar el parámetro lambda de la variable Electronico
@@ -56,7 +56,7 @@ sim_mult <- function(datos, nom.var = names(datos), nom.vard,nom.varc, component
         #se obtienen los valores de las fns de densidad poisson  
         #con los parámetros calcualdos con las distribuciones previas 
         #por cada  xi discreta
-        aux.po<-vdiscreta(datos,lambda,l,i,nom.vard,j)
+        aux.po<-vdiscreta(datos,lambda,l,i,nom.vard,j,t)
         #print(aux.po)
         aux.l0s<- t(as.matrix(aux.po$lambda))
         l0s[l,] <- c(l,j,i,aux.l0s,prod(aux.po$po))
@@ -69,7 +69,7 @@ sim_mult <- function(datos, nom.var = names(datos), nom.vard,nom.varc, component
         mu0s[l,] <- c(l,j,i,aux.mu0s,aux.nor$nor[1])
         
         ##Se incorpora la previa de la variable latente (pis) con las densidades
-        ##de la parte ontinua y discreta
+        ##de la parte continua y discreta
         aux.phi<-data.frame(v.k=l,phi=pis$pi[l]*aux.nor$nor[1]*prod(aux.po$po))
         
         phis<-rbind(aux.phi,phis)
@@ -86,7 +86,7 @@ sim_mult <- function(datos, nom.var = names(datos), nom.vard,nom.varc, component
       
       sims_vlat <- rbind(p_aux, sims_vlat)
      
-     print("interna")   
+     #print("interna")   
      print(i)
     }
     
@@ -95,7 +95,9 @@ sim_mult <- function(datos, nom.var = names(datos), nom.vard,nom.varc, component
     
     #asigna <- sims[c("id","v.k")]
     asigna <- data.frame(id=as.character.factor(sims$id),v.k=sims$v.k,stringsAsFactors=FALSE)
-    sims_total<-rbind(sims_vlat, sims_total)
+    nueva_sim<-data.frame(sims_vlat$v.k,sims_vlat$sim,sims_vlat$delta,sims_vlat$zij,sims_vlat$id,sims_vlat$nor,sims_vlat$po)
+    
+    sims_total<-rbind(nueva_sim, sims_total)
     
     ## Se obtienen los hiperparámetros y parámetros para las distribuciones posteriores
     zjs_barra<-en_componente_multi(sims,k) #devuelve el número de observaciones dentro de cada componente
@@ -125,12 +127,16 @@ sim_mult <- function(datos, nom.var = names(datos), nom.vard,nom.varc, component
     lambda<-lambda.post
     pis<-post.pis
     
+    
     print("sim")
     print(j)  ## imprime el n?mero de iteraci?n que ha transcurrido
-    #gc()
-    
+    gc()
+
   }
-  return(sims_total)
+  
+  list_sim<-list(param,lambda,pis,sims_total)
+  
+  return(list_sim)
 }    
 
 
