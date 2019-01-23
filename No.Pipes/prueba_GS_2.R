@@ -1,22 +1,22 @@
 
 rm(list=ls())
 
-install.packages("tidyverse") 
-install.packages("MCMCpack")  
-install.packages("LCA") 
-install.packages("readr")
-install.packages("dplyr")
-install.packages("psych")
-install.packages("lubridate")
-install.packages("reshape")
-install.packages("reshape2")
-install.packages("Hmisc")
-install.packages("GGally")
-install.packages("mvtnorm")
-install.packages("stats")
-install.packages("magrittr")
-install.packages("base")
-install.packages("grid")
+# install.packages("tidyverse") 
+# install.packages("MCMCpack")  
+# install.packages("LCA") 
+# install.packages("readr")
+# install.packages("dplyr")
+# install.packages("psych")
+# install.packages("lubridate")
+# install.packages("reshape")
+# install.packages("reshape2")
+# install.packages("Hmisc")
+# install.packages("GGally")
+# install.packages("mvtnorm")
+# install.packages("stats")
+# install.packages("magrittr")
+# install.packages("base")
+# install.packages("grid")
 
 require("tidyverse") 
 require("MCMCpack")  
@@ -56,18 +56,16 @@ source("./No.Pipes/posterior_pi_multi.R")
 source("./No.Pipes/posterior_sigma_multi.R")
 
 
-
-data.clientes <- read_csv('Clientes_v2017.csv',
-                          col_names=TRUE, col_types=cols(Cliente=col_character()))
+#data.clientes <- read_csv('./No.Pipes/Clientes_v2017.csv',
+#                          col_names=TRUE, col_types=cols(Cliente=col_character()))
 
 ##nueva base de datos
-porvenir<-read_csv(file="Clientes_v2017.csv", col_names=TRUE,locale=locale(date_format = "%d%.%m%.%Y"),
+porvenir <-read_csv(file="./No.Pipes/Clientes_v2017.csv", col_names=TRUE,locale=locale(date_format = "%d%.%m%.%Y"),
                    col_types=cols(Cliente=col_character(), Sexo=col_factor(levels=c("F","M")), Suc=col_factor(levels=c(1,2,3,4,5,6,7,8,9,10)) , Ctedesde=col_date(),
                                   F_nacimiento=col_date(),  CP=col_character()))
 
 ##seleccion de variables
-datos<-porvenir[c("Cliente", "Cred_perd", "Cred_PF", "Ing_tot", "Monto_prom","Saldo")]
-
+datos <- porvenir[c("Cliente", "Cred_perd", "Cred_PF", "Ing_tot", "Monto_prom","Saldo")]
 
 nom.var<-c("Cred_perd","Cred_PF","Ing_tot","Monto_prom","Saldo")
 
@@ -77,15 +75,14 @@ nom.vard<-c("Cred_perd","Cred_PF")
 
 ##pruebas
 
-s<-sim_mult(datos[7000:7200,],nom.var=nom.var,nom.vard=nom.vard,nom.varc=nom.varc,
+s <- sim_mult(datos,nom.var=nom.var,nom.vard=nom.vard,nom.varc=nom.varc,
             componente=2,folio='Cliente', a=1,iteraciones=1000)
 
-s1<-sim_mult(datos[29000:29100,],nom.var=nom.var,nom.vard=nom.vard,nom.varc=nom.varc,
-            componente=3,folio='Cliente',t=100, a=1,iteraciones=20)
-
-datos_asignados<-evalua_test(data_t=datos[20000:20100,],nmult=s[[1]],poisson=s[[2]],dirichlet=s[[3]],
-                      nom.var=nom.var,nom.vard=nom.vard,nom.varc=nom.varc, componente = 2,
-                      folio = 'Cliente')
+datos_asignados <- evalua_test(data_t=datos[20000:20100,],nmult=s[[1]],
+                               poisson=s[[2]],dirichlet=s[[3]],
+                               nom.var=nom.var,nom.vard=nom.vard,
+                               nom.varc=nom.varc, componente = 2,
+                               folio = 'Cliente')
 
 ##prueba aislada manual
 
@@ -115,7 +112,7 @@ simulacion1%>%
 
 
 
-s1[[4]]%>%
+s[[4]]%>%
   ggplot(aes(x= sims_vlat.sim, y =sims_vlat.delta , colour = as.factor(sims_vlat.v.k))) +
   geom_point()
 
