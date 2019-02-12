@@ -65,12 +65,12 @@ source('posterior_sigma_multi.R')
 
 
 
-data.clientes <- read_csv('Clientes_v2017.csv',
-                          col_names=TRUE, col_types=cols(Cliente=col_character()))
+#data.clientes <- read_csv('Clientes_v2017.csv',
+#                          col_names=TRUE, col_types=cols(Cliente=col_character()))
 
-summary(data.clientes)
-dim(data.clientes)
-class(data.clientes)
+#summary(data.clientes)
+#dim(data.clientes)
+#class(data.clientes)
 
 ##nueva base de datos
 porvenir<-read_csv(file="Clientes_v2017.csv", col_names=TRUE,locale=locale(date_format = "%d%.%m%.%Y"),
@@ -91,13 +91,14 @@ nom.varc<-c("Ing_tot","Monto_prom","Saldo")
 nom.vard<-c("Cred_perd","Cred_PF")
 
 ##pruebas
+componente = 2
 
 s <- sim_mult(datos,nom.var=nom.var,nom.vard=nom.vard,
               nom.varc=nom.varc,
               componente=2,
               folio='Cliente', 
               a=1,
-              iteraciones=200)
+              iteraciones=20)
 
 ##prueba aislada manual
 
