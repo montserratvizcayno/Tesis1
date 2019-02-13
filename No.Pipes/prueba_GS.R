@@ -1,7 +1,7 @@
 
 rm(list=ls())
 
-require("tidyverse") 
+require("tidyr") 
 require("MCMCpack")  
 require("LCA") 
 require('readr')
@@ -10,15 +10,21 @@ require('psych')
 require('lubridate')
 require('reshape')
 require('reshape2')
-require('Hmisc')
-require('GGally')
+##require('Hmisc')
+##require('GGally')
 require('mvtnorm')
 require('stats')
-require('magrittr')
+require('purrr')
 require('base')
 require('grid')
+require('coda')
+require('git2r')
+require('sp')
+require('utils')
+require('method')
+require('MASS')
 
-setwd("C:/Users/Montse/Downloads/Montse DELL Backup/GitHub1.1/Tesis1/Gibbs Sampler/Sampler/No pipes")
+setwd("/home/montserrat/Documents/No.Pipes")
 
 
 source('dist_inicial_multi.R')
@@ -40,8 +46,8 @@ source('posterior_sigma_multi.R')
 
 
 
-data.clientes <- read_csv('Clientes_v2017.csv',
-                          col_names=TRUE, col_types=cols(Cliente=col_character()))
+##data.clientes <- read_csv('Clientes_v2017.csv',
+                          ##col_names=TRUE, col_types=cols(Cliente=col_character()))
 
 ##nueva base de datos
 porvenir<-read_csv(file="Clientes_v2017.csv", col_names=TRUE,locale=locale(date_format = "%d%.%m%.%Y"),
@@ -60,13 +66,11 @@ nom.vard<-c("Cred_perd","Cred_PF")
 
 ##pruebas
 
-s<-sim_mult(datos[7000:7200,],nom.var=nom.var,nom.vard=nom.vard,nom.varc=nom.varc,
-            componente=2,folio='Cliente', a=1,iteraciones=1000)
 
-s1<-sim_mult(datos[29000:29100,],nom.var=nom.var,nom.vard=nom.vard,nom.varc=nom.varc,
-            componente=3,folio='Cliente',t=100, a=1,iteraciones=20)
+s1<-sim_mult(datos,nom.var=nom.var,nom.vard=nom.vard,nom.varc=nom.varc,
+            componente=2,folio='Cliente',t=100, a=1,iteraciones=100)
 
-datos_asignados<-evalua_test(data_t=datos[20000:20100,],nmult=s[[1]],poisson=s[[2]],dirichlet=s[[3]],
+##datos_asignados<-evalua_test(data_t=datos[20000:20100,],nmult=s[[1]],poisson=s[[2]],dirichlet=s[[3]],
                       nom.var=nom.var,nom.vard=nom.vard,nom.varc=nom.varc, componente = 2,
                       folio = 'Cliente')
 

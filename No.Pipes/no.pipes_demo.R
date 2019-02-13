@@ -63,11 +63,24 @@ source('pi_init.R')
 source('posterior_pi_multi.R')
 source('posterior_sigma_multi.R')
 
+detach_package <- function(pkg, character.only = FALSE)
+{
+  if(!character.only)
+  {
+    pkg <- deparse(substitute(pkg))
+  }
+  search_item <- paste("package", pkg, sep = ":")
+  while(search_item %in% search())
+  {
+    detach(search_item, unload = TRUE, character.only = TRUE)
+  }
+}
 
+detach_package("data.table", TRUE)
 
 #data.clientes <- read_csv('Clientes_v2017.csv',
 #                          col_names=TRUE, col_types=cols(Cliente=col_character()))
-
+#
 #summary(data.clientes)
 #dim(data.clientes)
 #class(data.clientes)
@@ -91,7 +104,8 @@ nom.varc<-c("Ing_tot","Monto_prom","Saldo")
 nom.vard<-c("Cred_perd","Cred_PF")
 
 ##pruebas
-componente = 2
+
+componente <- 2
 
 s <- sim_mult(datos,nom.var=nom.var,nom.vard=nom.vard,
               nom.varc=nom.varc,
