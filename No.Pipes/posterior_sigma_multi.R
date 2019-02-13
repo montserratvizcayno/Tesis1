@@ -34,7 +34,7 @@ posterior_sigma_multi<-function(hparam.post,nom.varc,xjs_barra,k){
       aux.posts0 <- dcast(aux.posts0,variable~Var2)
       
       
-      ## calcular la dist previa del parámetro Mu con una distribución normal multivariada(Medias observadas,Sigmas)
+      ## calcular la dist previa del par?metro Mu con una distribuci?n normal multivariada(Medias observadas,Sigmas)
       
       aux.postmed<-aux.pparam[c("variable","media")]
       aux.postmed <- rename(aux.postmed,c(variable="var"))
@@ -49,8 +49,9 @@ posterior_sigma_multi<-function(hparam.post,nom.varc,xjs_barra,k){
       aux.postmu0<-melt(data.frame(aux.postmu0))
       aux.postmu0 <- rename(aux.postmu0,c(value="mu0"))
       
+
       
-      aux.post<-data.frame(v.k=l,Merge(aux.posts0,aux.postmu0,id=~variable),
+      aux.post<-data.frame(v.k=l,merge(aux.posts0,aux.postmu0,by='variable'),
                            aux.pparam[c("media",ynom.varc,"v","njs")])
       aux.post <- setNames(aux.post,c("v.k","variable",
                                       xnom.varc,"mu0","media",ynom.varc,"v","njs"))
