@@ -57,4 +57,5 @@ comentando que $p(x_i|\theta)$ puede ser una `funcion de masas de probabilidades
 
 ## Apendice B
 
-* El `apendice B` puede ser una descripcion de las funciones en R que desarrollaste y que distribuyes en `Github`.
+* El `apendice B2^52
+` puede ser una descripcion de las funciones en R que desarrollaste y que distribuyes en `Github`.
