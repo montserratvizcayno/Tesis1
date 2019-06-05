@@ -87,8 +87,15 @@ nom.vard<-c("Cred_perd","Cred_PF")
 ##pruebas
 
 
-s1<-sim_mult(datos,nom.var=nom.var,nom.vard=nom.vard,nom.varc=nom.varc,
-            componente=2,folio='Cliente',t=100, a=1,iteraciones=100)
+s1 <- sim_mult(datos,
+               nom.var=nom.var,
+               nom.vard=nom.vard,
+               nom.varc=nom.varc,
+               componente=2,
+               folio='Cliente',
+               t=100, 
+               a=1,
+               iteraciones=100)
 
 ##datos_asignados<-evalua_test(data_t=datos[20000:20100,],nmult=s[[1]],poisson=s[[2]],dirichlet=s[[3]],
                       nom.var=nom.var,nom.vard=nom.vard,nom.varc=nom.varc, componente = 2,
