@@ -1,0 +1,38 @@
+---
+title: "Tesis Montserrat"
+author: "Juan Carlos Martinez Ovando"
+date: "5 Junio 2019"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Comentarios Generales
+
+## Capitulo 1
+
+* El `capitulo 1` debe ser de introduccion a tu tesis, i.e. resumen del problema que estudiaras, el problema que motivo tal estudio, asi como una descripcion del contenido del documento. 
+
+> Todo esto considerando un espacio de 4-8 paginas.
+
+## Capitulo 2
+
+* El `capitulo 2` debe incluir una descripcion del problema de conglomeracion/clustering (basado en distancias o basado en modelos de probabilidad). En ambos casos, ahondar sobre el enfoque tradicional en que las `mediciones/atributos` son escalares, y el reto que representa realizar la `segmentacion/conglomeracion` combinando otras escalas de medicion: `conteos`, `categorias`, etc.
+
+## Capitulo 3
+
+* El `capitulo 3` debe incluir una descripcion del paradigma bayesiano de inferencia y prediccion (como lo tienes actualmente en el capitulo 2 actual).
+
+* La ecuacion `2.2` actual, enunciala en su forma parametrica, i.e.
+$$
+p(x_1,\ldots,x_n|\theta)=\prod_{i=1}^{n}p(x_i|\theta),
+$$
+comentando que $p(x_i|\theta)$ puede ser una `funcion de masas de probabilidades` (caso discreto) o una `funcion de densidad de probabilidades` (caso absolutamente continuo).
+
+* La especificacion de $P(X_i=x_i)=F(X_i=x_i|\theta)$ que describes en la siguiente pagina (`pp.13`) tendra validez solo considerando los casos que comento en el punto anterior.
+
+* El `teorema de representacion` debe presentarse antes de la `verosimilitud` y antes del `teorema de Bayes`. Con el teorema de representacion establecido, puedes ahondar en los dos componentes que lo componen: a) `verosimilitud` y b) `prior`. con esos dos ingredientes puedes plantear la `actualizacion de informacion`, a.k.a. `aprendizaje estadistico` via el teorema de Bayes.
+
+* La seccion actual `2.8.1. Métodos de Aproximación` debe ser una seccion que siga a la de `prediccion`.

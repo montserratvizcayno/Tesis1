@@ -1,0 +1,57 @@
+---
+title: "Tesis Montserrat"
+author: "Juan Carlos Martínez-Ovando"
+date: "28 Marzo 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Modelo
+
+El modelo es
+$$
+\mathbb{P}(x)=\sum_{k=1}^{K}w_k N(x^c|\theta_k,\Sigma_k)Po(x^d|\Omega_k),
+$$
+donde $x^c$ es la parte continua de $x$ y $x^d$ su complemento discreto.
+
+## Parametros
+
+* $(w_k)_{k=1}^{K}$ toman valores en el simplex $(K-1)$ dimensional
+
+* $(\theta_k,\Sigma_k)_{k=1}^{K}$ parte discreta
+
+* $(\Omega_k)_{k=1}^{K}$ parte continua
+
+**Partes discretas y continuas son separables**
+
+## *Priors*
+
+* $\pi(w_k)_{k=1}^{K}$ Dirichlet $(K-1)$-dimensional
+
+* $\pi(\theta_k,\Sigma_k)_{k=1}^{K}$ producto $K$-dimensional Normal-Wishar Inversa
+
+* $\pi(\Omega_k)_{k=1}^{K}$ producto $K$-dimensional Wishar Inversa
+
+## *Posterior*
+
+Distribucion final, con parametros latentes:
+
+$$
+\pi\left\{(w_k)_{k=1}^{K},(\theta_k,\Sigma_k)_{k=1}^{K}, (\Omega_k)_{k=1}^{K}, (z_i)_{i=1}^{n}| (x_i)_{i=1}^{n}\right\}
+$$
+La cual no se puede obtener de manera analiltica cerrada.
+
+**Gibbs sampler**
+
+Con base en datos iniciales, muestreamos de las distribuciones condicionales completas:
+
+* $(w_k)_{k=1}^{K}$ de una Dirichlet conjugada dadas las $z_i$s
+
+* $(\theta_k,\Sigma_k)_{k=1}^{K}$ de la normal-Wishart inversa conjugada, dados los datos continuos y las $z_i$s
+
+* $(\Omega_k)_{k=1}^{K}$ de la Wishart inversa conjugada,  dados los datos discretos y las $z_i$s
+
+* $(z_i)_{i=1}^{n}$ dado todo, datos y parametros
