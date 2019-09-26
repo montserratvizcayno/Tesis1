@@ -1,0 +1,25 @@
+---
+title: "no.pipes_comentarios"
+author: "Juan Carlos Martinez Ovando"
+date: "8 November 2018"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## A partir de linea `95` de `no.pipes_demo.R` marca error
+
+```
+> s <- sim_mult(datos,nom.var=nom.var,nom.vard=nom.vard,
++               nom.varc=nom.varc,
++               componente=2,
++               folio='Cliente', 
++               a=1,
++               iteraciones=200)
+ Show Traceback
+ 
+ Rerun with Debug
+ Error in FUN(X[[i]], ...) : object 'variable' not found 
+```

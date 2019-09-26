@@ -1,0 +1,44 @@
+Funciones:
+
+sim_mult.R   Esta función es la principal, en la que se cargan los datos, los nombres de las variables, el número de 
+iteraciones, el número de componentes. Esta función te arroja como resultado una lista donde se incluyen la matriz de
+los parámetros de la normal multivariada de la última iteración, los parámetros de las poisson de la última iteración,
+los parámetros de la dirichlet, así como la base de datos de las observaciones con su asignación a un grupo, la probabilidad
+de asignación. 
+
+pi_init.R Esta función calcula los valores previos del a variable latente mediante una distribución dirichlet.
+
+dist_inicial_multi.R  Calcula el parámetro inicial Sigma con una distribución wishart inversa (vj=p+1,S=matriz(covar)) y 
+el parámetro inicial Mu con una distribución normal multivariada(ms=Medias observadas,aux.sigmas=Sigmas) para las variables continuas. 
+
+
+dist_init_discreta.R calcula el parámetro inicial lambda, mediante Gamma(aj,varianza) siendo aj un valor arbitrareo en este caso 1 
+y varianza la varianza observada.
+
+estadisticos_iniciales.R Calcula la media y varianza de las variables continuas
+
+vdiscreta.R Con base en la información de las observaciones y los parámetros iniciales lambda, se calculan las densidades
+poisson de cada variable discreta.
+
+vcontinua.R Con base en la información de las observaciones y los parámetros iniciales MU y Sigma, se calculan las densidades
+de una normal multivariada para las variables continuas.
+
+var_latente_multi.R Esta función es la que asigna una observación a un componente, mediante la probabilidad calculada con la multinomial 
+
+en_componente_multi.R Esta función cuenta cuantas observaciones fueron asignadas al componente k en la iteración j
+
+por_componente_multi.R Esta función calcula las nuevas medias dentro de cada componente con base en la asignación de la iteración j
+
+post_param.R Se calculan los nuevos hiperparámetros para la parte continua, incluyendo la información obtenida en la iteración j
+
+post_lambda.R Se calculan los nuevos hiperparámetros para la parte discreta, incluyendo la información obtenida en la iteración j
+
+
+posterior_sigma_multi.R Calcula los parámetros Sigma y Mupara las distribución  posterior de las variables continuas
+
+posterior_lambda.R Calcula los parámetros Lambda para las distribuciones poisson posteriores de las variables discretas
+
+posterior_pi_multi.R Calcula los parámetros para la variable latente
+
+
+

@@ -1,0 +1,13 @@
+---
+title: "Tesis_Revisiones_ 200619"
+author: "JCMO"
+date: "8/28/2019"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Comentarios
